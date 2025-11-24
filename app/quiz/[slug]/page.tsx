@@ -12,7 +12,6 @@ import ProfileSetupModal from "@/components/profile-setup-modal"
 import type { Quiz } from "@/lib/quiz-data"
 import type { QuizProgress } from "@/lib/quiz-storage"
 import type { UserProfile } from "@/lib/profile-storage"
-import type { PreQuizData } from "@/components/pre-quiz-form"
 
 type PageParams = {
   slug: string
@@ -26,7 +25,6 @@ export default function QuizPage() {
   const [progress, setProgress] = useState<QuizProgress | null>(null)
   const [mounted, setMounted] = useState(false)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
-  const [preQuizData, setPreQuizData] = useState<PreQuizData | null>(null)
   const [showProfileModal, setShowProfileModal] = useState(false)
 
   const view = searchParams.get("view") || "info"
@@ -73,7 +71,6 @@ export default function QuizPage() {
     return (
       <QuizFlow
         quiz={quiz}
-        preQuizData={preQuizData}
         userProfile={userProfile}
         onComplete={(answers) => {
           let score = 0
@@ -126,7 +123,6 @@ export default function QuizPage() {
           progress={progress}
           onRetake={() => {
             setProgress(null)
-            setPreQuizData(null)
             router.push(`/quiz/${quiz.slug}?view=info`)
           }}
         />

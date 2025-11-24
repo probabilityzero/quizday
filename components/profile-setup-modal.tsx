@@ -67,7 +67,7 @@ export default function ProfileSetupModal({ isOpen, onClose, onComplete }: Profi
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Year / Grade</label>
+            <label className="block text-sm font-medium mb-2">Age</label>
             <input
               type="text"
               value={year}
@@ -76,19 +76,11 @@ export default function ProfileSetupModal({ isOpen, onClose, onComplete }: Profi
                 if (errors.year) setErrors({ ...errors, year: "" })
               }}
               className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-smooth"
-              placeholder="2024"
             />
             {errors.year && <p className="text-xs text-destructive mt-1">{errors.year}</p>}
           </div>
 
           <div className="flex gap-3 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-4 py-2 border border-border rounded-lg hover:bg-secondary transition-smooth"
-            >
-              Skip
-            </button>
             <button
               type="submit"
               className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-smooth font-medium"

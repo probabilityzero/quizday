@@ -28,22 +28,84 @@ export default function Home() {
     return null
   }
 
+  const totalQuizzes = quizzes.length
+  const completedQuizzes = Object.values(progress).filter(p => p.attempts.length > 0).length
+  const totalQuestions = quizzes.reduce((sum, q) => sum + q.questions.length, 0)
+
   return (
     <main className="min-h-screen bg-background transition-smooth">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8 lg:py-12">
-        {/* Hero section */}
-        <div className="mb-8 md:mb-12 transition-enter">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-balance mb-3 md:mb-4">
-            Quiz <span className="bg-gradient-to-r from-primary font-semibold text-2xl to-accent bg-clip-text text-transparent">by Han</span>
-          </h1>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
-            Choose from the collection of quizzes and test your expertise across different categories.
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12 lg:py-16">
+        {/* Hero Section - Professional Header */}
+        <div className="mb-12 md:mb-16 transition-enter">
+          {/* Main Title with Artistic Design */}
+          <div className="text-center mb-6 md:mb-8">
+            <div className="relative inline-block">
+              {/* Decorative elements */}
+              <div className="absolute -top-4 -left-4 w-20 h-20 bg-primary/10 rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-accent/10 rounded-full blur-2xl"></div>
+              
+              {/* Main heading */}
+              <h1 className="relative text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-3">
+                <span className="block bg-gradient-to-br from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent">
+                  QUIZDAY
+                </span>
+              </h1>
+              
+              {/* Subtitle */}
+              <div className="relative flex items-center justify-center gap-3 md:gap-4">
+                <div className="h-px w-8 md:w-12 bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+                <p className="text-lg md:text-xl lg:text-2xl font-light tracking-[0.3em] text-muted-foreground">
+                  BY <span className="font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">HAN</span>
+                </p>
+                <div className="h-px w-8 md:w-12 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Description and Stats */}
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed">
+              Participate every Tuesday to win exciting prizes! Test your knowledge across various topics and challenge yourself with our weekly quizzes.
+            </p>
+
             {profile && (
-              <span className="block mt-2">
-                Welcome back, <span className="text-primary font-semibold">{profile.name}</span>!
-              </span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground">
+                  {profile.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase()
+                    .slice(0, 2)}
+                </div>
+                <span className="text-sm md:text-base">
+                  Welcome back, <span className="font-semibold text-primary">{profile.name}!</span>
+                </span>
+              </div>
             )}
-          </p>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-3 gap-4 md:gap-6 max-w-2xl mx-auto pt-6">
+              <div className="bg-card border border-border rounded-xl p-4 md:p-6 hover:border-primary/30 transition-all">
+                <div className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-br from-primary to-primary/70 bg-clip-text text-transparent">
+                  {totalQuizzes}
+                </div>
+                <div className="text-xs md:text-sm text-muted-foreground mt-1">Total Quizzes</div>
+              </div>
+              <div className="bg-card border border-border rounded-xl p-4 md:p-6 hover:border-accent/30 transition-all">
+                <div className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-br from-accent to-accent/70 bg-clip-text text-transparent">
+                  {totalQuestions}
+                </div>
+                <div className="text-xs md:text-sm text-muted-foreground mt-1">Questions</div>
+              </div>
+              <div className="bg-card border border-border rounded-xl p-4 md:p-6 hover:border-green-500/30 transition-all">
+                <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-green-500">
+                  {completedQuizzes}
+                </div>
+                <div className="text-xs md:text-sm text-muted-foreground mt-1">Completed</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Categories */}
@@ -52,7 +114,11 @@ export default function Home() {
             const categoryQuizzes = quizzes.filter((q) => q.category === category)
             return (
               <div key={category}>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">{category}</h2>
+                <div className="flex items-center gap-4 mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold">{category}</h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-border to-transparent"></div>
+                  <span className="text-sm text-muted-foreground">{categoryQuizzes.length} quizzes</span>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   {categoryQuizzes.map((quiz) => {
                     const quizProgress = progress[quiz.id]
