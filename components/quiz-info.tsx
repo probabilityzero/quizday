@@ -220,14 +220,14 @@ export default function QuizInfo({ quiz, progress, onStartQuiz, onViewResults }:
           </div>
         )}
 
-        <div className="text-center space-y-3 md:space-y-4 p-2">
+        <div className="text-center mb-3">
           <p className="text-xs md:text-sm text-muted-foreground">
             {hasAttempts ? 'Challenge yourself to beat your best score!' : 'No time limit • You can review your answers at the end'}
           </p>
         </div>
         
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
+        <div className="flex flex-col-reverse sm:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
           <Link href={`/`} className="flex-1">
             <button className="w-full px-6 md:px-8 py-3 md:py-4 bg-card border-2 border-border hover:border-primary/30 text-foreground rounded-lg md:rounded-xl font-bold transition-all hover:shadow-lg active:scale-95 text-base md:text-lg">
               Back to Home

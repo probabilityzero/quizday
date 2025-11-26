@@ -68,25 +68,43 @@ export default function QuizResults({ quiz, progress, attemptIndex = -1, onRetak
             </h1>
 
             <div className="flex items-center justify-center gap-6 flex-wrap px-4">
-              <div className="text-center">
-                <div className={`text-4xl md:text-5xl font-black ${
-                  percentage >= 80 ? 'text-green-400' :
-                  percentage >= 60 ? 'text-yellow-400' :
-                  'text-red-400'
-                } drop-shadow-lg`}>
+              <div className="text-center relative">
+                {/* Steady Glow Background */}
+                <div className="absolute -inset-4 opacity-60">
+                  <div className={`absolute inset-0 rounded-full blur-2xl ${
+                    percentage >= 80 ? 'bg-green-200' :
+                    percentage >= 60 ? 'bg-yellow-200' :
+                    'bg-red-200'
+                  }`}></div>
+                </div>
+                <div className={`relative text-4xl md:text-5xl font-black text-white drop-shadow-2xl`} style={{
+                  textShadow: percentage >= 80 
+                    ? '0 0 30px rgba(134, 239, 172, 1), 0 0 15px rgba(134, 239, 172, 0.8), 0 2px 4px rgba(0, 0, 0, 0.3)' 
+                    : percentage >= 60 
+                      ? '0 0 30px rgba(253, 224, 71, 1), 0 0 15px rgba(253, 224, 71, 0.8), 0 2px 4px rgba(0, 0, 0, 0.3)' 
+                      : '0 0 30px rgba(252, 165, 165, 1), 0 0 15px rgba(252, 165, 165, 0.8), 0 2px 4px rgba(0, 0, 0, 0.3)'
+                }}>
                   {percentage}%
                 </div>
-                <p className="text-xs md:text-sm text-white/80 mt-1.5 md:mt-2">Latest Score</p>
+                <p className="relative text-xs md:text-sm text-white/90 mt-1.5 md:mt-2 font-semibold">Latest Score</p>
               </div>
               {progress.attempts.length > 1 && (
                 <>
                   <div className="w-px h-10 md:h-12 bg-white/30"></div>
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl font-black text-white drop-shadow-lg flex items-center gap-2">
-                      <HiStar className="w-5 h-5 md:w-6 md:h-6 text-yellow-400" />
+                  <div className="text-center relative">
+                    {/* Steady Glow for Best Score */}
+                    <div className="absolute -inset-4 opacity-60">
+                      <div className="absolute inset-0 rounded-full blur-2xl bg-amber-100"></div>
+                    </div>
+                    <div className="relative text-3xl md:text-4xl font-black text-white drop-shadow-2xl" style={{
+                      textShadow: '0 0 30px rgba(251, 191, 36, 1), 0 0 15px rgba(251, 191, 36, 0.9), 0 2px 4px rgba(0, 0, 0, 0.3)'
+                    }}>
                       {bestPercentage}%
                     </div>
-                    <p className="text-xs md:text-sm text-white/80 mt-1.5 md:mt-2">Best Score</p>
+                    <p className="relative flex items-center justify-center gap-1 text-xs md:text-sm text-white/90 mt-1.5 md:mt-2 font-semibold">
+                      <HiStar className="w-3 h-3 md:w-4 md:h-4 text-yellow-200 drop-shadow-lg" />
+                      Best Score
+                    </p>
                   </div>
                 </>
               )}
@@ -222,12 +240,27 @@ export default function QuizResults({ quiz, progress, attemptIndex = -1, onRetak
                     className="w-full p-3 md:p-4 flex items-start justify-between hover:bg-secondary/50 transition-all text-left active:bg-secondary/70"
                   >
                     <div className="flex items-start gap-2 md:gap-3 flex-1 min-w-0">
-                      <div
-                        className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center shrink-0 text-white font-bold text-xs md:text-sm ${
-                          isSkipped ? "bg-gray-400" : isCorrect ? "bg-green-500" : "bg-red-500"
-                        }`}
-                      >
-                        {isSkipped ? "—" : isCorrect ? "✓" : "✕"}
+                      <div className="relative shrink-0">
+                        {/* Animated Glow Background */}
+                        <div
+                          className={`absolute inset-0 rounded-full blur-md animate-pulse ${
+                            isSkipped 
+                              ? "bg-gray-400/40" 
+                              : isCorrect 
+                                ? "bg-green-500/50" 
+                                : "bg-red-500/50"
+                          }`}
+                          style={{
+                            animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                          }}
+                        />
+                        <div
+                          className={`relative w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm shadow-lg ${
+                            isSkipped ? "bg-gray-400" : isCorrect ? "bg-green-500" : "bg-red-500"
+                          }`}
+                        >
+                          {isSkipped ? "—" : isCorrect ? "✓" : "✕"}
+                        </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm md:text-base font-semibold text-foreground mb-0.5 md:mb-1">
@@ -331,7 +364,7 @@ export default function QuizResults({ quiz, progress, attemptIndex = -1, onRetak
         )}
         
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
+        <div className="flex flex-col-reverse sm:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
           <Link href={`/`} className="flex-1">
             <button className="w-full px-6 md:px-8 py-3 md:py-4 bg-card border-2 border-border hover:border-primary/30 text-foreground rounded-lg md:rounded-xl font-bold transition-all hover:shadow-lg active:scale-95 text-base md:text-lg">
               Back to Home

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { MdPushPin } from "react-icons/md"
+import confetti from "canvas-confetti"
 import type { Quiz } from "@/lib/quiz-data"
 import type { UserProfile } from "@/lib/profile-storage"
 
@@ -58,9 +59,49 @@ export default function QuizFlow({ quiz, userProfile, onComplete }: QuizFlowProp
     }
   }
 
+  const fireConfetti = () => {
+    const duration = 3000
+    const animationEnd = Date.now() + duration
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 }
+
+    const randomInRange = (min: number, max: number) => {
+      return Math.random() * (max - min) + min
+    }
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now()
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval)
+      }
+
+      const particleCount = 50 * (timeLeft / duration)
+
+      // Fire from left side
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0, 0.1), y: Math.random() - 0.2 },
+        angle: randomInRange(55, 125),
+      })
+
+      // Fire from right side
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.9, 1), y: Math.random() - 0.2 },
+        angle: randomInRange(55, 125),
+      })
+    }, 250)
+  }
+
   const handleSubmit = () => {
     if (allAnswered) {
-      onComplete(answers)
+      fireConfetti()
+      // Delay the navigation slightly to let confetti start
+      setTimeout(() => {
+        onComplete(answers)
+      }, 300)
     }
   }
 
@@ -119,7 +160,7 @@ export default function QuizFlow({ quiz, userProfile, onComplete }: QuizFlowProp
               
               <div>
                 <h1 className="text-lg md:text-2xl lg:text-3xl font-black text-white drop-shadow-lg">{quiz.title}</h1>
-                <div className="inline-block px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded-full mt-1">
+                <div className="inline-block px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded-full">
                   <span className="text-[10px] md:text-xs font-semibold text-white/90">In Progress</span>
                 </div>
               </div>
@@ -175,26 +216,25 @@ export default function QuizFlow({ quiz, userProfile, onComplete }: QuizFlowProp
               <div>
                 <p className="text-xs md:text-sm text-muted-foreground">Progress</p>
                 <p className="text-lg md:text-2xl font-bold text-foreground">
-                  {currentQuestionIndex + 1} <span className="text-muted-foreground text-sm md:text-lg">/ {quiz.questions.length}</span>
+                  {answeredCount} <span className="text-muted-foreground text-sm md:text-lg">/ {quiz.questions.length}</span>
                 </p>
               </div>
               <div className="text-right">
                 <button
                   onClick={() => setIsMenuOpen(true)}
-                  className="py-1.5 md:py-2 px-3 md:px-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition-all flex items-center justify-center gap-2 text-xs md:text-sm"
+                  className="py-1.5 md:py-2 px-2.5 md:px-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition-all flex items-center justify-center gap-2 text-xs md:text-sm"
                 >
                   <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
-                  <span className="hidden sm:inline">View All</span>
-                  <span className="sm:hidden">{answeredCount}/{quiz.questions.length}</span>
+                  <span className="text-sm">View All</span>
                 </button>
               </div>
             </div>
             <div className="w-full bg-muted rounded-full h-2 md:h-3 overflow-hidden mb-3 md:mb-4">
               <div
                 className={`h-2 md:h-3 rounded-full bg-linear-to-r ${quiz.accentColor} transition-all duration-500`}
-                style={{ width: `${((currentQuestionIndex + 1) / quiz.questions.length) * 100}%` }}
+                style={{ width: `${(answeredCount / quiz.questions.length) * 100}%` }}
               />
             </div>
             
@@ -203,12 +243,6 @@ export default function QuizFlow({ quiz, userProfile, onComplete }: QuizFlowProp
               <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-border">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-xs md:text-sm font-medium text-foreground">Quick Navigation</p>
-                  <p className="text-xs text-muted-foreground">
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                      Answered: {answeredCount}
-                    </span>
-                  </p>
                 </div>
                 <QuestionGrid />
               </div>
