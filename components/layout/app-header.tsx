@@ -6,8 +6,8 @@ import { getUserProfile } from "@/lib/profile-storage"
 import { useState, useEffect } from "react"
 import type { UserProfile } from "@/lib/profile-storage"
 
-export default function AppHeader() {
-  const { theme, setTheme, mounted } = useTheme()
+export default function AppFooter() {
+  const { theme, setTheme } = useTheme()
   const router = useRouter()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [showMenu, setShowMenu] = useState(false)
@@ -17,23 +17,21 @@ export default function AppHeader() {
     setProfile(getUserProfile())
   }, [])
 
-  if (!mounted) return null
-
   const toggleTheme = () => {
     setTheme(isDark ? "light" : "dark")
   }
 
   return (
-    <header className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b border-border transition-smooth">
+    <footer className="bg-background/95 backdrop-blur border-b border-border transition-smooth">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <button onClick={() => router.push("/")} className="font-bold text-xl hover:opacity-80 transition-smooth group">
-          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Quiz</span>
+          <span className="gradient-to-r from-primary to-accent bg-clip-text">QUIZDAY</span>
           <span className="text-xs ml-1 text-muted-foreground group-hover:text-foreground transition-smooth">
             by Han
           </span>
         </button>
 
-        <div className="flex items-center gap-2 md:gap-4">
+        {/* <div className="flex items-center gap-2 md:gap-4">
           <button
             onClick={toggleTheme}
             className="p-2 hover:bg-secondary rounded-lg transition-smooth"
@@ -60,7 +58,7 @@ export default function AppHeader() {
               className="p-2 hover:bg-secondary rounded-lg transition-smooth flex items-center gap-2"
             >
               {profile ? (
-                <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground scale-in">
+                <div className="w-8 h-8 gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground scale-in">
                   {profile.name
                     .split(" ")
                     .map((n) => n[0])
@@ -101,14 +99,14 @@ export default function AppHeader() {
                     }}
                     className="w-full text-left px-4 py-2 hover:bg-secondary transition-smooth text-sm"
                   >
-                    Create Profile
+                   Profile
                   </button>
                 )}
               </div>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
-    </header>
+    </footer>
   )
 }

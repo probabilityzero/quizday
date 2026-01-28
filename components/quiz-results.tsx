@@ -348,8 +348,10 @@ export default function QuizResults({ quiz, progress, attemptIndex = -1, onRetak
                   .slice(0, 2)}
               </div>
               <div>
-                <p className="text-base md:text-lg font-bold text-foreground">{progress.userProfile.name}</p>
-                <p className="text-xs md:text-sm text-muted-foreground">Class of {progress.userProfile.year}</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-base md:text-lg font-bold text-foreground">{progress.userProfile.name},</span>
+                <p className="text-xs md:text-sm text-muted-foreground">{progress.userProfile.year}</p>
+              </div>
                 <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5 md:mt-1">
                   Completed on {new Date(attempt.completedAt).toLocaleDateString('en-US', { 
                     weekday: 'long', 

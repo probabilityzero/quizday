@@ -8,7 +8,6 @@ import { getUserProfile } from "@/lib/profile-storage"
 import QuizQuestions from "@/components/quiz-questions"
 import QuizResults from "@/components/quiz-results"
 import QuizInfo from "@/components/quiz-info"
-import ProfileSetupModal from "@/components/profile-setup-modal"
 import type { Quiz } from "@/data/quiz"
 import type { QuizProgress } from "@/lib/quiz-storage"
 import type { UserProfile } from "@/lib/profile-storage"
@@ -55,7 +54,8 @@ export default function QuizPage() {
 
   const handleStartQuiz = () => {
     if (!userProfile) {
-      setShowProfileModal(true)
+      // open the global profile modal via URL param
+      router.push(`/${quiz.slug}?setup-profile=true`)
     } else {
       router.push(`/${quiz.slug}?view=questions`)
     }
@@ -63,8 +63,8 @@ export default function QuizPage() {
 
   const handleProfileComplete = (profile: UserProfile) => {
     setUserProfile(profile)
-    setShowProfileModal(false)
-    router.push(`/${quiz.slug}?quiz=questions`)
+    // after profile completion, navigate to questions view
+    router.push(`/${quiz.slug}?view=questions`)
   }
 
   if (view === "questions") {
@@ -126,11 +126,7 @@ export default function QuizPage() {
             router.push(`/${quiz.slug}?view=info`)
           }}
         />
-        <ProfileSetupModal
-          isOpen={showProfileModal}
-          onClose={() => setShowProfileModal(false)}
-          onComplete={handleProfileComplete}
-        />
+        {/* Global modal handled in layout via URL param */}
       </>
     )
   }
@@ -143,11 +139,7 @@ export default function QuizPage() {
         onStartQuiz={handleStartQuiz}
         onViewResults={() => router.push(`/${quiz.slug}?view=results`)}
       />
-      <ProfileSetupModal
-        isOpen={showProfileModal}
-        onClose={() => setShowProfileModal(false)}
-        onComplete={handleProfileComplete}
-      />
+      {/* Global modal handled in layout via URL param */}
     </>
   )
 }

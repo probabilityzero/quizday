@@ -331,7 +331,7 @@ export default function QuizQuestions({ quiz, userProfile, onComplete }: Props) 
             </div>
 
             {/* Explanation */}
-            {isAnswered && currentQuestion.explanation && (
+            {/* {isAnswered && currentQuestion.explanation && (
               <div className={`mt-4 md:mt-6 p-3 md:p-4 rounded-lg md:rounded-xl border-2 ${
                 isCorrect
                   ? "bg-green-500/10 border-green-500/30"
@@ -359,7 +359,7 @@ export default function QuizQuestions({ quiz, userProfile, onComplete }: Props) 
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Navigation Buttons */}
